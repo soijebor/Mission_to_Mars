@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Mission to Mars</title>
     <link
@@ -11,12 +11,13 @@
     />
   </head>
   <body>
+    <div style= "background-color: teal; font-family:cursive;font-size:14px;font-style:italic;">
     <div class="container">
       <!-- Add Jumbotron to Header -->
-      <div class="jumbotron text-center">
+      <div class="jumbotron text-center" style="background-color: gray; border: 5px solid black; border-radius: 15px; background-image: url(https://www.sciencenewsforstudents.org/wp-content/uploads/2019/11/860_main_Marscolony.gif);">
         <h1>Mission to Mars</h1>
         <!-- Add a button to activate scraping script -->
-        <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+        <p><a class="btn btn-primary btn-lg"  style="background-color: maroon;" href="/scrape" role="button">Scrape New Data</a></p>
       </div>
       <!-- Add section for Mars News -->
       <div class="row" id="mars-news">
@@ -31,23 +32,47 @@
         </div>
       </div>
         <!-- Section for Featured Image and Facts table -->
-        <div class="row" id="mars-featured-image">
-          <div class="col-md-8">
+        <div class="row" id="mars-featured-image" style="float: left">
+          <div class="col-md-8 text-center">
             <h2>Featured Mars Image</h2>
             <img
               src="{{mars.featured_image}}"
               class="img-responsive"
               alt="Responsive image"
+              style = "height: 350px; width:650px; border: 5px outset black; border-radius: 15px 50px 30px 5px;"
             />
-        </div>
-        <div class="col-md-4">
+          </div>
           <!-- Mars Facts -->
-          <div class="row" id="mars-facts">
+          <div class="row text-center" id="mars-facts"style="float: right; border: 7px outset black; border-radius: 15px 50px 30px; ">
             <h4>Mars Facts</h4>
             {{ mars.facts | safe }}
+          </div>
+        <!-- CHALLENGE - Hemispheres -->
+        <div class="row" id="mars-hemishperes">
+          <div class="col-md-8 text-center">
+            <h3>Mars Hemispheres</h3>
+            <div class="row">
+              {% for item in mars.hemispheres %}
+              <div class="col-md-3">
+                <div class="thumbnail text-center" style="border: 5px solid black; border-radius: 15px;">
+                  {{item['title']}}
+                    <img
+                      src="{{item['img_url']}}"
+                      class="rounded"
+                      width=100%
+                      style = "height: 150px; width:150px "
+                    />
+                  </div class="caption">
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
           </div>
         </div>
       </div>
     </div>
-  </body>
+  </div>
+</body>
 </html>

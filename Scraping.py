@@ -4,10 +4,6 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import datetime as dt
 
-# Set the executable path and initialize the chrome browser in splinter
-#executable_path = {'executable_path': '/usr/local/bin/chromedriver'}
-#browser = Browser('chrome', **executable_path)
-
 # create a function to initiate the browser
 def scrape_all():
     # Initiate headless driver for deployment
@@ -22,6 +18,7 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        "hemispheres": hemispheres(browser),
         "last_modified": dt.datetime.now()
     }
 
@@ -75,6 +72,7 @@ def featured_image(browser):
     html = browser.html
     img_soup = BeautifulSoup(html, 'html.parser')
 
+
     # Add try/except for error handling
     try:
         # Find the relative image url
@@ -105,6 +103,49 @@ def mars_facts():
     
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
+
+# ***CHALLENGE***
+def hemispheres(browser):
+
+    # Visit the Mars Hemisphere url
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    browser.visit(url)
+
+    # Parse the resulting html with BeautifulSoup
+    html = browser.html
+    hemi_soup = BeautifulSoup(html, 'html.parser')
+
+    hemi_soup_url = hemi_soup.find_all('div', class_= "item")
+
+    # Create an empty list to store the dictionnary with 'img_url' and 'title'
+    hemisphere_image_urls = []
+
+    #loop through the 4 urls 
+    for item in hemi_soup_url:
+        hemisphere_url = item.find('a', class_ = "itemLink product-item")['href']
+        hemisphere_click = 'https://astrogeology.usgs.gov' + hemisphere_url
+        browser.visit(hemisphere_click)
+        
+        # Parse the resulting hemi_html with BeautifulSoup
+        hemi_html = browser.html
+        hemi_soup = BeautifulSoup(hemi_html, 'html.parser')
+
+        title = hemi_soup.find('h2', class_= "title").text.rstrip("Enhanced")
+        img_url = hemi_soup.find('div', class_ = "downloads").find('li').find('a')['href']
+
+        #Create an empty dictionary to store 'img_url' and 'title'
+        hemisphere_dict = {}
+
+        #Create a key for the dictionary for title "hemisphere_dict"
+        hemisphere_dict['title'] = title
+
+        #Create a key for the dictionary for img_url "hemisphere_dict"
+        hemisphere_dict['img_url'] = img_url
+
+        #append dictionary to list
+        hemisphere_image_urls.append(hemisphere_dict)
+
+    return hemisphere_image_urls
 
 if __name__ == "__main__":
     # If running as script, print scraped data
