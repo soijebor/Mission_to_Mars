@@ -1,8 +1,9 @@
 # Mission_to_Mars
 
 ## Porfolio
+A link to my portfolio repository: https://github.com/soijebor/Portfolio
 
-![porfolio image]()
+![porfolio image](https://github.com/soijebor/Mission_to_Mars/blob/master/images/Portfolio%20Image.png)
 
 ## Project Overview
 
